@@ -2,11 +2,39 @@
 #pragma once
 
 #include <string>
+#include <memory>
+#include "Job.h"
+#include "Character.h"
+
+#define MAX_LEVEL 10
+#define MAX_HP_WARRIOR 150
+#define MAX_HP 100
+
 
 using std::string;
+using std::unique_ptr;
+
 
 class Player {
+
+    unique_ptr<Job> job;
+    unique_ptr<Character> character;
+    string name;
+    int level;
+    int coins;
+    int force;
+    int healthPoints;
+    int MAX_HealthPoints;
+
 public:
+
+    Player(const string& name, const string& character, const string& job);
+    ~Player() = default;
+
+    string getJob() const;
+    string getCharacter() const;
+    int getCombatPower() const;
+    int getforce() const;
     /**
      * Gets the description of the player
      *
