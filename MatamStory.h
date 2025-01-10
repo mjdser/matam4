@@ -14,14 +14,17 @@ using std::vector;
 #include "Events/Event.h"
 
 
+
 class MatamStory{
 
 
 private:
-    vector<unique_ptr<Player>> players;
-    vector<unique_ptr<Event>> events;
+    vector<std::unique_ptr<Player>> players;
+    vector<std::shared_ptr<Event>> events;
 
-    unsigned int m_turnIndex;
+
+    unsigned int m_turnIndex = 1;
+    int m_roundIndex = 1;
 
     /**
      * Playes a single turn for a player
@@ -58,10 +61,30 @@ public:
     */
     MatamStory(std::istream& eventsStream, std::istream& playersStream);
 
+    //i want do a function that reads pack from the stream and returns a vector of shared pointers to the events
     /**
      * Plays the entire game
      *
      * @return - void
     */
     void play();
+
+    void eventsStreamReader(std::istream &eventsStream);
+
+    vector<shared_ptr<Encounter>> readFromPack(istream &eventsStream, int size);
+
+    void readPlayers(istream &playersStream);
+};
+
+
+class PlayersException : public std::exception {
+    const char* what() const noexcept override {
+        return "Players exception occurred!";
+    }
+};
+
+class EventException : public std::exception {
+    const char* what() const noexcept override {
+        return "EventException exception occurred!";
+    }
 };

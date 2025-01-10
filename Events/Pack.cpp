@@ -3,6 +3,7 @@
 
 #include "iostream"
 
+
 Pack::Pack(const std::vector<std::shared_ptr<Encounter>>& events) :
         Encounter(0, 0, 0) {
     if (events.size() < 2) {

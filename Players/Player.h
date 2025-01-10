@@ -76,4 +76,6 @@ public:
      * @return - coins of the player
     */
     int getCoins() const;
+
+    bool isDead() const;
 };

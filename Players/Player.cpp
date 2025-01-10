@@ -61,6 +61,6 @@ string Player::getDescription() const {
            std::to_string(Player_level) + ", force " + std::to_string(Player_Force) + ")";
 }
 
-bool isDead(const Player& player) {
-    return player.getHealthPoints() <= 0;
+bool Player::isDead() const {
+    return healthPoints <= 0;
 }
