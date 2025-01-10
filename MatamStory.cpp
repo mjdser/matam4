@@ -9,7 +9,25 @@
 void MatamStory::eventsStreamReader(std::istream& eventsStream) {
     string event;
     std::vector<shared_ptr<Event>> pack_events;
-
+    while (eventsStream >> event) {
+        if(event == "SolarEclipse") {
+            events.push_back(std::make_shared<SolarEclipse>());
+        } else if (event == "PotionsMerchant") {
+            events.push_back(std::make_shared<PotionsMerchant>());
+        } else if (event == "Snail") {
+            events.push_back(std::make_shared<Snail>());
+        } else if (event == "Slime") {
+            events.push_back(std::make_shared<Slime>());
+        } else if (event == "Barlog") {
+            events.push_back(std::make_shared<Barlog>());
+        } else if (event == "Pack") {
+            int num_of_events;
+            eventsStream >> num_of_events;
+            if (num_of_events < 2) {
+                throw std::invalid_argument("Pack must be at least 2");
+            }
+        }
+    }
 }
 
 
@@ -44,10 +62,29 @@ void MatamStory::playTurn(Player& player) {
      * 4. Print the turn outcome with "printTurnOutcome"
     */
 
-
+    shared_ptr<Event> current_event = events[m_roundIndex];
+    printTurnDetails(m_turnIndex, player, *current_event);
+    current_event->apply(player);
+    printTurnOutcome(current_event->getDescription());
+    m_turnIndex++;
 }
 
+bool comparingPlayers(const std::unique_ptr<Player>& Player_A, const std::unique_ptr<Player>& Player_B) {
+    if (Player_A->getLevel() == Player_B->getLevel()) {
+        if (Player_A->getForce() == Player_B->getForce()) {
+            if (Player_A->getHealthPoints() == Player_B->getHealthPoints()) {
+                return Player_A->getCoins() > Player_B->getCoins();
+            }
+            return Player_A->getHealthPoints() > Player_B->getHealthPoints();
+        }
+        return Player_A->getForce() > Player_B->getForce();
+    }
+    return Player_A->getLevel() > Player_B->getLevel();
+}
 
+void sortPlayers(vector<std::unique_ptr<Player>>& players) {
+    std::sort(players.begin(), players.end(), comparingPlayers);
+}
 
 void MatamStory::playRound() {
 

@@ -78,4 +78,10 @@ public:
     int getCoins() const;
 
     bool isDead() const;
+
+    void setCoins(int coins);
+    void setHealthPoints(int healthPoints);
+    int getMaxHealthPoints() const;
+    void setLevel(int level);
+
 };

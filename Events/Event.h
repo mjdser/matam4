@@ -110,13 +110,20 @@ public:
 };
 
 class PotionsMerchant : public Event {
+private:
+    void applyResponsible(Player& player) const;
+    void applyRiskTaking(Player& player) const;
+
 public:
     PotionsMerchant() = default;
     ~PotionsMerchant() override = default;
 
-    string getDescription() const override;
+    string getMerchantPurchaseMessage() const;
 
     string getTypeString() const override;
 
     void apply(Player& player) const override;
+
+
+
 };

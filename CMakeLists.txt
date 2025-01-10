@@ -21,4 +21,6 @@ add_executable(HW4_2425A
         MatamStory.cpp
         MatamStory.h
         Utilities.cpp
-        Utilities.h)
+        Utilities.h
+        Events/PotionsMerchant.cpp
+        Events/SolarEclipse.cpp)
