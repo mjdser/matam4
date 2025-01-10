@@ -1,3 +1,11 @@
-//
-// Created by al_w0 on 09/01/2025.
-//
+
+
+#include "Event.h"
+
+#include "iostream"
+
+Slime::Slime() : Encounter(Slime_CombatPower, Slime_Loot, Slime_Damage) {}
+
+string Slime::getTypeString() const {
+    return "Slime";
+}

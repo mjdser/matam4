@@ -2,13 +2,25 @@
 #pragma once
 
 #include <iostream>
+#include "Players/Player.h"
+#include "Events/Event.h"
+#include <vector>
+#include <memory>
+
+
+using std::vector;
 
 #include "Players/Player.h"
 #include "Events/Event.h"
 
 
 class MatamStory{
+
+
 private:
+    vector<unique_ptr<Player>> players;
+    vector<unique_ptr<Event>> events;
+
     unsigned int m_turnIndex;
 
     /**

@@ -28,6 +28,7 @@ public:
     virtual ~Event() = default;
     virtual void apply(Player& player) const = 0;
     virtual string getDescription() const = 0;
+    virtual string getTypeString() const = 0;
 };
 
 
@@ -37,9 +38,19 @@ protected:
     int Loot;
     int Damage;
 public:
+    int getCombatPower() const {
+        return CombatPower;
+    }
+    int getLoot() const{
+        return Loot;
+    }
+    int getDamage() const{
+        return Damage;
+    }
+
+
     Encounter(int CombatPower, int Loot, int Damage);
     virtual ~Encounter() = default;
-    virtual void apply(Player& player) const = 0;
     string getDescription() const ;
 
 };
@@ -47,46 +58,50 @@ public:
 class Snail : public Encounter {
 public:
     Snail();
-    string getDescription() const override;
-    void apply(Player& player) const override;
+    ~Snail() override = default;
+    string getTypeString() const override;
 };
 
 class Slime : public Encounter {
 public:
     Slime();
-    string getDescription() const override;
-    void apply(Player& player) const override;
+    ~Slime() override = default;
+    string getTypeString() const override;
 };
 
 class Barlog : public Encounter {
 public:
     Barlog();
-    string getDescription() const override;
-    void apply(Player& player) const override;
+    ~Barlog() override = default;
+    string getTypeString() const override;
 };
 
 class Pack : public Encounter {
 private:
-    std::vector<unique_ptr<Encounter>> events;
+    std::vector<std::shared_ptr<Encounter>> events;
 public:
-    Pack();
-    string getDescription() const override;
-    void apply(Player& player) const override;
-
+    Pack(const std::vector<std::shared_ptr<Encounter>>& events);
+    ~Pack() override = default;
+    std::string getTypeString() const override;
+    std::string getDescription() const override;
 };
+
+
+
+
 
 
 class SolarEclipse : public Event {
 public:
     SolarEclipse();
+    ~SolarEclipse() override = default;
     string getDescription() const override;
-    void apply(Player& player) const override;
 
 };
 
 class PotionsMerchant : public Event {
 public:
     PotionsMerchant();
+    ~PotionsMerchant() override = default;
     string getDescription() const override;
-    void apply(Player& player) const override;
 };
