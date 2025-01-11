@@ -28,3 +28,32 @@ Pack::Pack(const std::vector<std::shared_ptr<Encounter>>& events) :
 string Pack::getTypeString() const {
     return "Pack";
 }
+
+
+
+string Pack::apply(Player &player) {
+
+    //check if playaer can win with this . damage
+
+    bool canWin = false;
+
+    if (player.getCombatPower() >= CombatPower){
+        canWin = true;
+    }
+
+        for (const auto &event: events) {
+        event->apply(player);
+    }
+
+    // Recalculate CombatPower, Loot, and Damage after applying all events
+    CombatPower = 0;
+    Loot = 0;
+    Damage = 0;
+    for (const auto &event: events) {
+        CombatPower += event->getCombatPower();
+        Loot += event->getLoot();
+        Damage += event->getDamage();
+    }
+
+        return to_string(canWin);
+}

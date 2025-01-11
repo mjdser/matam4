@@ -22,7 +22,7 @@ class Event {
 public:
     Event() = default;
     virtual ~Event() = default;
-    virtual void apply(Player& player) const = 0;
+    virtual string apply(Player& player)  = 0;
     virtual string getDescription() const = 0;
     virtual string getTypeString() const = 0;
 };
@@ -33,6 +33,7 @@ protected:
     int Loot;
     int Damage;
 public:
+
     int getCombatPower() const {
         return CombatPower;
     }
@@ -43,14 +44,28 @@ public:
         return Damage;
     }
 
+
     Encounter(int CombatPower, int Loot, int Damage)
             : CombatPower(CombatPower), Loot(Loot), Damage(Damage) {}
 
+
     virtual ~Encounter() = default;
+
+    void setBarlogCombatPower() {
+        this->CombatPower = CombatPower + 2;
+    }
 
     string getDescription() const override {
         return "Encounter with combat power: " + to_string(CombatPower);
     }
+
+    void levelUp(Player& player) const {
+        player.setLevel(player.getLevel() + 1);
+    }
+
+    bool canPlayerWin(Player &player);
+
+    string apply(Player &player) override;
 };
 
 class Snail : public Encounter {
@@ -60,7 +75,7 @@ public:
 
     string getTypeString() const override;
 
-    void apply(Player& player) const override;
+    string apply(Player& player) override;
 };
 
 class Slime : public Encounter {
@@ -70,7 +85,7 @@ public:
 
     string getTypeString() const override;
 
-    void apply(Player& player) const override;
+    string apply(Player& player)  override;
 };
 
 class Barlog : public Encounter {
@@ -80,7 +95,7 @@ public:
 
     string getTypeString() const override;
 
-    void apply(Player& player) const override;
+    string apply(Player& player)  override;
 };
 
 class Pack : public Encounter {
@@ -94,7 +109,7 @@ public:
 
     string getDescription() const override;
 
-    void apply(Player& player) const override;
+    string apply(Player& player)  override;
 };
 
 class SolarEclipse : public Event {
@@ -106,13 +121,13 @@ public:
 
     string getTypeString() const override;
 
-    void apply(Player& player) const override;
+    string apply(Player& player)  override;
 };
 
 class PotionsMerchant : public Event {
 private:
-    void applyResponsible(Player& player) const;
-    void applyRiskTaking(Player& player) const;
+    string applyResponsible(Player& player) const;
+    string applyRiskTaking(Player& player) const;
 
 public:
     PotionsMerchant() = default;
@@ -122,8 +137,7 @@ public:
 
     string getTypeString() const override;
 
-    void apply(Player& player) const override;
-
+    string apply(Player& player)  override;
 
 
 };

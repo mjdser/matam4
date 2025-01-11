@@ -23,4 +23,5 @@ add_executable(HW4_2425A
         Utilities.cpp
         Utilities.h
         Events/PotionsMerchant.cpp
-        Events/SolarEclipse.cpp)
+        Events/SolarEclipse.cpp
+        Events/Encounter.cpp)

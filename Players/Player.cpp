@@ -32,7 +32,7 @@ int Player::getCombatPower() const {
     if(job->getJobtoString() == "Warrior") {
         return force * 2 + level;
     }
-    return force;
+    return force + level;
 }
 
 

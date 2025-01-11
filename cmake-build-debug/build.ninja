@@ -119,6 +119,13 @@ build CMakeFiles/HW4_2425A.dir/Events/SolarEclipse.cpp.obj: CXX_COMPILER__HW4_24
   OBJECT_DIR = CMakeFiles\HW4_2425A.dir
   OBJECT_FILE_DIR = CMakeFiles\HW4_2425A.dir\Events
 
+build CMakeFiles/HW4_2425A.dir/Events/Encounter.cpp.obj: CXX_COMPILER__HW4_2425A_unscanned_Debug C$:/Users/al_w0/OneDrive/Desktop/HW4_2425A/Events/Encounter.cpp || cmake_object_order_depends_target_HW4_2425A
+  DEP_FILE = CMakeFiles\HW4_2425A.dir\Events\Encounter.cpp.obj.d
+  FLAGS = -Wall -pedantic-errors -Werror -g -std=gnu++14 -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/al_w0/OneDrive/Desktop/HW4_2425A/. -IC:/Users/al_w0/OneDrive/Desktop/HW4_2425A/Events -IC:/Users/al_w0/OneDrive/Desktop/HW4_2425A/Players
+  OBJECT_DIR = CMakeFiles\HW4_2425A.dir
+  OBJECT_FILE_DIR = CMakeFiles\HW4_2425A.dir\Events
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target HW4_2425A
@@ -127,7 +134,7 @@ build CMakeFiles/HW4_2425A.dir/Events/SolarEclipse.cpp.obj: CXX_COMPILER__HW4_24
 #############################################
 # Link the executable HW4_2425A.exe
 
-build HW4_2425A.exe: CXX_EXECUTABLE_LINKER__HW4_2425A_Debug CMakeFiles/HW4_2425A.dir/Events/Barlog.cpp.obj CMakeFiles/HW4_2425A.dir/Events/Pack.cpp.obj CMakeFiles/HW4_2425A.dir/Events/Slime.cpp.obj CMakeFiles/HW4_2425A.dir/Events/Snail.cpp.obj CMakeFiles/HW4_2425A.dir/Players/Player.cpp.obj CMakeFiles/HW4_2425A.dir/main.cpp.obj CMakeFiles/HW4_2425A.dir/MatamStory.cpp.obj CMakeFiles/HW4_2425A.dir/Utilities.cpp.obj CMakeFiles/HW4_2425A.dir/Events/PotionsMerchant.cpp.obj CMakeFiles/HW4_2425A.dir/Events/SolarEclipse.cpp.obj
+build HW4_2425A.exe: CXX_EXECUTABLE_LINKER__HW4_2425A_Debug CMakeFiles/HW4_2425A.dir/Events/Barlog.cpp.obj CMakeFiles/HW4_2425A.dir/Events/Pack.cpp.obj CMakeFiles/HW4_2425A.dir/Events/Slime.cpp.obj CMakeFiles/HW4_2425A.dir/Events/Snail.cpp.obj CMakeFiles/HW4_2425A.dir/Players/Player.cpp.obj CMakeFiles/HW4_2425A.dir/main.cpp.obj CMakeFiles/HW4_2425A.dir/MatamStory.cpp.obj CMakeFiles/HW4_2425A.dir/Utilities.cpp.obj CMakeFiles/HW4_2425A.dir/Events/PotionsMerchant.cpp.obj CMakeFiles/HW4_2425A.dir/Events/SolarEclipse.cpp.obj CMakeFiles/HW4_2425A.dir/Events/Encounter.cpp.obj
   FLAGS = -Wall -pedantic-errors -Werror -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\HW4_2425A.dir

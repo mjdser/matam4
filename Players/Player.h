@@ -83,5 +83,6 @@ public:
     void setHealthPoints(int healthPoints);
     int getMaxHealthPoints() const;
     void setLevel(int level);
+    void setForce(int force);
 
 };
