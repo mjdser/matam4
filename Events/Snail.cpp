@@ -1,7 +1,5 @@
+#include "Event.h"      // Include the declaration of Barlog (defined in Event.h)
 
-#include "Event.h"
-
-#include "iostream"
 
 Snail::Snail() : Encounter(Snail_CombatPower, Snail_Loot, Snail_Damage) {}
 

@@ -37,9 +37,7 @@ int Player::getCombatPower() const {
 }
 
 
-int Player::getforce() const {
-    return force;
-}
+
 
 int Player::getLevel() const {
     return level;
@@ -66,3 +64,49 @@ string Player::getDescription() const {
 bool Player::isDead() const {
     return healthPoints <= 0;
 }
+
+void Player::setLevel(int level_toSet) {
+    this->level = level_toSet;
+}
+
+void Player::setForce(int force_ToSet) {
+    this->force = force_ToSet;
+}
+
+int Player::getCoins() const {
+    return coins;
+}
+
+void Player::setCoins(int coins_toSet) {
+    this->coins = coins_toSet;
+}
+
+void Player::setHealthPoints(int healthPoints_toSet) {
+    if(healthPoints_toSet > MAX_HealthPoints) {
+        this->healthPoints = MAX_HealthPoints;
+        return;
+    }
+    this->healthPoints = healthPoints_toSet;
+}
+
+int Player::getMaxHealthPoints() const {
+    return MAX_HealthPoints;
+}
+
+string Player::getName() const {
+    return name;
+}
+
+string Player::getJob() const {
+    return job->getJobtoString();
+}
+
+string Player::getCharacter() const {
+    return character->getCharactertoString();
+}
+
+int Player::getForce() const {
+    return force;
+}
+
+

@@ -3,7 +3,8 @@
 #include "MatamStory.h"
 #include <string>
 #include "Utilities.h"
-
+#include <vector>
+#include "Players/Player.h"
 
 
 void MatamStory::eventsStreamReader(std::istream& eventsStream) {

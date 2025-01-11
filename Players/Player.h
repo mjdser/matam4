@@ -36,7 +36,6 @@ public:
     string getJob() const;
     string getCharacter() const;
     int getCombatPower() const;
-    int getforce() const;
     /**
      * Gets the description of the player
      *
@@ -81,10 +80,14 @@ public:
 
     bool isDead() const;
 
-    void setCoins(int coins);
+    void setCoins(int coins_toSet);
+
     void setHealthPoints(int healthPoints);
+
     int getMaxHealthPoints() const;
-    void setLevel(int level);
-    void setForce(int force);
+
+    void setLevel(int level_ToSet);
+
+    void setForce(int force_ToSet);
 
 };

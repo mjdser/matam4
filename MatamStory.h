@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Events/Event.h"
 #include "Players/Player.h"
+#include "Utilities.h"
 
 #include <vector>
 #include <memory>
@@ -25,7 +26,7 @@ private:
 
 
     unsigned int m_turnIndex = 1;
-    int m_roundIndex = 1;
+    unsigned int m_roundIndex = 1;
 
     /**
      * Playes a single turn for a player
