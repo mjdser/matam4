@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Players/Player.h"
 #include <iostream>
 #include <vector>
+#include "/Players/Player.h"
 
 #define Snail_CombatPower 5
 #define Snail_Loot 2
@@ -49,14 +49,10 @@ public:
             : CombatPower(CombatPower), Loot(Loot), Damage(Damage) {}
 
 
-    virtual ~Encounter() = default;
+    ~Encounter() override = default;
 
     void setBarlogCombatPower() {
         this->CombatPower = CombatPower + 2;
-    }
-
-    string getDescription() const override {
-        return "Encounter with combat power: " + to_string(CombatPower);
     }
 
     void levelUp(Player& player) const {
@@ -74,8 +70,9 @@ public:
     ~Snail() override = default;
 
     string getTypeString() const override;
+    string getDescription() const override;
 
-    string apply(Player& player) override;
+
 };
 
 class Slime : public Encounter {
@@ -84,8 +81,9 @@ public:
     ~Slime() override = default;
 
     string getTypeString() const override;
+    string getDescription() const override;
 
-    string apply(Player& player)  override;
+
 };
 
 class Barlog : public Encounter {
@@ -94,8 +92,9 @@ public:
     ~Barlog() override = default;
 
     string getTypeString() const override;
+    string getDescription() const override;
 
-    string apply(Player& player)  override;
+
 };
 
 class Pack : public Encounter {
@@ -112,19 +111,23 @@ public:
     string apply(Player& player)  override;
 };
 
-class SolarEclipse : public Event {
+
+class SpecialEncounter : public Event {
+public:
+    SpecialEncounter() = default;
+    ~SpecialEncounter() override = default;
+};
+
+class SolarEclipse : public SpecialEncounter {
 public:
     SolarEclipse() = default;
     ~SolarEclipse() override = default;
-
     string getDescription() const override;
-
-    string getTypeString() const override;
-
     string apply(Player& player)  override;
+    string getTypeString() const override;
 };
 
-class PotionsMerchant : public Event {
+class PotionsMerchant : public SpecialEncounter {
 private:
     string applyResponsible(Player& player) const;
     string applyRiskTaking(Player& player) const;
@@ -132,12 +135,9 @@ private:
 public:
     PotionsMerchant() = default;
     ~PotionsMerchant() override = default;
-
-    string getMerchantPurchaseMessage() const;
-
     string getTypeString() const override;
 
+
+    string getDescription() const override;
     string apply(Player& player)  override;
-
-
 };

@@ -1,7 +1,7 @@
 
 #include <algorithm>
 #include "MatamStory.h"
-
+#include <string>
 #include "Utilities.h"
 
 
@@ -39,6 +39,7 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
         throw EventException();
     }
 
+
     /*===== TODO: Open and read events file =====*/
     eventsStreamReader(eventsStream);
     /*==========================================*/
@@ -54,6 +55,10 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
 
 void MatamStory::playTurn(Player& player) {
 
+    //check if turn index is bigger than the events size
+    if (m_roundIndex >= events.size()) {
+        m_roundIndex = 0;
+    }
     /**
      * Steps to implement (there may be more, depending on your design):
      * 1. Get the next event from the events list
@@ -64,9 +69,10 @@ void MatamStory::playTurn(Player& player) {
 
     shared_ptr<Event> current_event = events[m_roundIndex];
     printTurnDetails(m_turnIndex, player, *current_event);
-    current_event->apply(player);
+    cout << current_event->apply(player) << endl << endl;
     printTurnOutcome(current_event->getDescription());
     m_turnIndex++;
+    m_roundIndex++;
 }
 
 bool comparingPlayers(const std::unique_ptr<Player>& Player_A, const std::unique_ptr<Player>& Player_B) {
@@ -88,7 +94,7 @@ void sortPlayers(vector<std::unique_ptr<Player>>& players) {
 
 void MatamStory::playRound() {
 
-    int players_num = players.size();
+    int players_num = this->m_numOfPlayers;
     printRoundStart();
 
     /*===== TODO: Play a turn for each player =====*/
@@ -151,7 +157,7 @@ bool allDead(const vector<std::unique_ptr<Player>>& players) {
     void MatamStory::play() {
         printStartMessage();
         /*===== TODO: Print start message entry for each player using "printStartPlayerEntry" =====*/
-        for (int i = 0; i < players.size(); i++) {
+        for (int i = 0; i < m_numOfPlayers ; i++) {
             printStartPlayerEntry(i + 1, *players[i]);
         }
         /*=========================================================================================*/
@@ -207,13 +213,13 @@ bool allDead(const vector<std::unique_ptr<Player>>& players) {
         if (name.size() < 3 || name.size() > 15) {
             return false;
         }
-        for (int i = 0; i < name.size(); i++) {
-            if ((name[i] < 'a' || name[i] > 'z') && (name[i] < 'A' || name[i] > 'Z')) {
+        for(char i : name) {
+            if ((i < 'a' || i > 'z') && (i < 'A' || i > 'Z')) {
                 return false;
             }
         }
         return true;
-    }
+}
 
 
 //read people from file and initialize the players vector
@@ -236,8 +242,10 @@ void MatamStory::readPlayers(istream &playersStream) {
         players.push_back(std::make_unique<Player>(name, character, job));
         num_of_players++;
     }
+    this->m_numOfPlayers = num_of_players;
     if (num_of_players < 2 || num_of_players > 6) {
         throw PlayersException();
     }
+
 }
 

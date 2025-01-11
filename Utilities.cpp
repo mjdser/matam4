@@ -49,7 +49,7 @@ void printLeaderBoardEntry(unsigned int i, const Player& player) {
     const int distance = 6;
     string name = player.getName();
     cout << name;
-    for(unsigned int i = 0; i < nameDistance - name.size(); i++){
+    for(unsigned int j = 0; j < nameDistance - name.size(); j++){
         cout << " ";
     }
     int level = player.getLevel();
@@ -59,12 +59,12 @@ void printLeaderBoardEntry(unsigned int i, const Player& player) {
     }
     int force = player.getForce();
     cout <<  "        " << force;
-    for(unsigned int i = 0; i < distance - to_string(force).size(); i++){
+    for(unsigned int k = 0; k < distance - to_string(force).size(); k++){
         cout << " ";
     }
     int healthPoints = player.getHealthPoints();
     cout << healthPoints;
-    for(unsigned int i = 0; i < distance - to_string(healthPoints).size(); i++){
+    for(unsigned int w = 0; w < distance - to_string(healthPoints).size(); w++){
         cout << " ";
     }
     int coins = player.getCoins();

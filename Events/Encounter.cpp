@@ -14,6 +14,7 @@ bool Encounter::canPlayerWin(Player &player)  {
     if (player.getCombatPower() > CombatPower) {
         flag = true;
     }
+
     return flag;
 }
 

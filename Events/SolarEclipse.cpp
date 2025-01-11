@@ -19,6 +19,10 @@ string SolarEclipse::apply(Player& player) {
 
 
 
+string SolarEclipse::getDescription() const {
+    return "SolarEclipse";
+}
+
 string SolarEclipse::getTypeString() const {
     return "SolarEclipse";
 }

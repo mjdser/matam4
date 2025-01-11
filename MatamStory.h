@@ -2,16 +2,16 @@
 #pragma once
 
 #include <iostream>
-#include "Players/Player.h"
 #include "Events/Event.h"
+#include "Players/Player.h"
+
 #include <vector>
 #include <memory>
 
 
 using std::vector;
 
-#include "Players/Player.h"
-#include "Events/Event.h"
+
 
 
 
@@ -20,6 +20,7 @@ class MatamStory{
 
 private:
     vector<std::unique_ptr<Player>> players;
+    int m_numOfPlayers = 0;
     vector<std::shared_ptr<Event>> events;
 
 

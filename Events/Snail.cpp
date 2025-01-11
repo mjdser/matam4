@@ -9,4 +9,8 @@ string Snail::getTypeString() const {
     return "Snail";
 }
 
-
+string Snail::getDescription() const {
+    return getTypeString() + " (power " + std::to_string(getCombatPower()) +
+           ", loot " + std::to_string(getLoot()) +
+           ", damage " + std::to_string(getDamage()) + ")";
+}

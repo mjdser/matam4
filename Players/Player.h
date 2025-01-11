@@ -6,6 +6,8 @@
 #include "Job.h"
 #include "Character.h"
 
+
+
 #define MAX_LEVEL 10
 #define MAX_HP_WARRIOR 150
 #define MAX_HP 100

@@ -25,6 +25,7 @@ force(5), healthPoints(MAX_HP), MAX_HealthPoints(MAX_HP) {
         this->coins = 20;
         this->job = std::make_unique<Archer>();
     }
+
 }
 
 

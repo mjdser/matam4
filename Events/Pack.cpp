@@ -26,7 +26,7 @@ Pack::Pack(const std::vector<std::shared_ptr<Encounter>>& events) :
 }
 
 string Pack::getTypeString() const {
-    return "Pack";
+    return "Pack of" + std::to_string(events.size()) + "members";
 }
 
 
@@ -56,4 +56,12 @@ string Pack::apply(Player &player) {
     }
 
         return to_string(canWin);
+}
+
+string Pack::getDescription() const {
+    string description = getTypeString() + " (power " + std::to_string(getCombatPower()) +
+                         ", loot " + std::to_string(getLoot()) +
+                         ", damage " + std::to_string(getDamage()) + ")";
+
+    return description;
 }
