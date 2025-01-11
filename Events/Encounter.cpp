@@ -20,8 +20,8 @@ bool Encounter::canPlayerWin(Player &player)  {
 
 string Encounter::apply(Player& player) {
 
-    if(getTypeString() == "Barlog"){
-        this->setBarlogCombatPower();
+    if(getTypeString() == "Balrog"){
+        this->setBalrogCombatPower();
     }
 
     if (canPlayerWin(player)) {

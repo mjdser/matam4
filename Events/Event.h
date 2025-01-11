@@ -12,9 +12,9 @@
 #define Slime_Loot 5
 #define Slime_Damage 25
 
-#define Barlog_CombatPower 15
-#define Barlog_Loot 100
-#define Barlog_Damage 9001
+#define Balrog_CombatPower 15
+#define Balrog_Loot 100
+#define Balrog_Damage 9001
 
 using namespace std;
 
@@ -51,7 +51,7 @@ public:
 
     ~Encounter() override = default;
 
-    void setBarlogCombatPower() {
+    void setBalrogCombatPower() {
         this->CombatPower = CombatPower + 2;
     }
 
@@ -86,10 +86,10 @@ public:
 
 };
 
-class Barlog : public Encounter {
+class Balrog : public Encounter {
 public:
-    Barlog();
-    ~Barlog() override = default;
+    Balrog();
+    ~Balrog() override = default;
 
     string getTypeString() const override;
     string getDescription() const override;

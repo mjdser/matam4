@@ -8,7 +8,6 @@ include_directories(Events)
 include_directories(Players)
 
 add_executable(HW4_2425A
-        Events/Barlog.cpp
         Events/Event.h
         Events/Pack.cpp
         Events/Slime.cpp
@@ -24,4 +23,6 @@ add_executable(HW4_2425A
         Utilities.h
         Events/PotionsMerchant.cpp
         Events/SolarEclipse.cpp
-        Events/Encounter.cpp)
+        Events/Encounter.cpp
+        Events/Balrog.cpp
+)

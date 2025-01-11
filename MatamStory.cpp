@@ -19,8 +19,8 @@ void MatamStory::eventsStreamReader(std::istream& eventsStream) {
             events.push_back(std::make_shared<Snail>());
         } else if (event == "Slime") {
             events.push_back(std::make_shared<Slime>());
-        } else if (event == "Barlog") {
-            events.push_back(std::make_shared<Barlog>());
+        } else if (event == "Balrog") {
+            events.push_back(std::make_shared<Balrog>());
         } else if (event == "Pack") {
             int num_of_events;
             eventsStream >> num_of_events;
@@ -192,8 +192,8 @@ bool allDead(const vector<std::unique_ptr<Player>>& players) {
                 pack_events.push_back(std::make_shared<Snail>());
             } else if (event == "Slime") {
                 pack_events.push_back(std::make_shared<Slime>());
-            } else if (event == "Barlog") {
-                pack_events.push_back(std::make_shared<Barlog>());
+            } else if (event == "Balrog") {
+                pack_events.push_back(std::make_shared<Balrog>());
             } else if (event == "Pack") {
                 int num_of_events;
                 eventsStream >> num_of_events;

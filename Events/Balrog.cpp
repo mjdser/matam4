@@ -1,18 +1,16 @@
 
 
 #include "Event.h"
-
 #include "iostream"
 
-Barlog::Barlog() : Encounter(Barlog_CombatPower, Barlog_Loot, Barlog_Damage) {}
+Balrog::Balrog() : Encounter(Balrog_CombatPower, Balrog_Loot, Balrog_Damage) {}
 
-string Barlog::getTypeString() const {
-    return "Barlog";
+string Balrog::getTypeString() const {
+    return "Balrog";
 }
 
-string Barlog::getDescription() const {
+string Balrog::getDescription() const {
     return getTypeString() + " (power " + std::to_string(getCombatPower()) +
            ", loot " + std::to_string(getLoot()) +
            ", damage " + std::to_string(getDamage()) + ")";
 }
-
