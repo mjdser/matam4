@@ -1,7 +1,8 @@
 
 #include "Event.h"
-
+#include "Utilities.h"
 #include "iostream"
+
 
 
 Pack::Pack(const std::vector<std::shared_ptr<Encounter>>& events) :
@@ -19,43 +20,45 @@ Pack::Pack(const std::vector<std::shared_ptr<Encounter>>& events) :
         Damage += event->getDamage();
     }
 
-    this->CombatPower = CombatPower;
-    this->Loot = Loot;
-    this->Damage = Damage;
-
 }
 
 string Pack::getTypeString() const {
-    return "Pack of" + std::to_string(events.size()) + "members";
+    return "Pack of " + std::to_string(events.size()) + " members";
 }
 
 
 
-string Pack::apply(Player &player) {
+std::string Pack::apply(Player &player) {
+    bool canWin = player.getCombatPower() > CombatPower;
 
-    //check if playaer can win with this . damage
 
-    bool canWin = false;
-
-    if (player.getCombatPower() >= CombatPower){
-        canWin = true;
-    }
-
-        for (const auto &event: events) {
-        event->apply(player);
-    }
 
     // Recalculate CombatPower, Loot, and Damage after applying all events
     CombatPower = 0;
     Loot = 0;
     Damage = 0;
-    for (const auto &event: events) {
+    for (const auto &event : events) {
+        if(event->getTypeString() == "Balrog"){
+            event->setBalrogCombatPower();
+        }
+
         CombatPower += event->getCombatPower();
         Loot += event->getLoot();
         Damage += event->getDamage();
     }
 
-        return to_string(canWin);
+    // Return only the final result
+    if (canWin) {
+        player.setCoins(player.getCoins() + Loot);
+        if(player.getJob() == "Warrior"){
+            player.setHealthPoints(player.getHealthPoints() - 10);
+        }
+        levelUp(player);
+        return getEncounterWonMessage(player, Loot);
+    } else {
+        player.setHealthPoints(player.getHealthPoints() - Damage);
+        return getEncounterLostMessage(player, Damage);
+    }
 }
 
 string Pack::getDescription() const {

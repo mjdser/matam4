@@ -109,6 +109,10 @@ public:
     string getDescription() const override;
 
     string apply(Player& player)  override;
+
+    string getPack() const{
+        return "Pack";
+    }
 };
 
 

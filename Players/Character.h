@@ -10,6 +10,7 @@ public:
     Character() = default;
     virtual ~Character() = default;
     virtual std::string getCharactertoString() const = 0;
+    virtual std::unique_ptr<Character> clone() const = 0;
 };
 
 class RiskTaking : public Character
@@ -21,6 +22,11 @@ public:
     {
         return "RiskTaking";
     }
+
+    std::unique_ptr<Character> clone() const override
+    {
+        return std::make_unique<RiskTaking>();
+    }
 };
 
 class Responsible : public Character
@@ -31,5 +37,10 @@ public:
     std::string getCharactertoString() const override
     {
         return "Responsible";
+    }
+
+    std::unique_ptr<Character> clone() const override
+    {
+        return std::make_unique<Responsible>();
     }
 };

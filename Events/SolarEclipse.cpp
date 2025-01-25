@@ -4,8 +4,11 @@
 
 
 string SolarEclipse::apply(Player& player) {
+    if(player.getForce() == 0){
+        return getSolarEclipseMessage(player, 0);
+    }
     int effect = 0;
-    if (player.getCharacter() == "Magician") {
+    if (player.getJob() == "Magician") {
         player.setForce(player.getForce() + 1);
         effect = 1;
     } else {

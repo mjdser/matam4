@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/al_w0/OneDrive/Desktop/HW4_2425A
+# Install script for directory: C:/Users/al_w0/OneDrive/Desktop/New folder (4)/HW4_2425A
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/al_w0/OneDrive/Desktop/HW4_2425A/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/al_w0/OneDrive/Desktop/New folder (4)/HW4_2425A/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

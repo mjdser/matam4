@@ -6,27 +6,27 @@
 
 
 
-string PotionsMerchant::applyResponsible(Player &player) const {
-    int counter = 0;
+std::string PotionsMerchant::applyResponsible(Player &player) const {
+    int purchases = 0;
     while (player.getCoins() >= 5 && player.getHealthPoints() < player.getMaxHealthPoints()) {
         player.setCoins(player.getCoins() - 5);
         player.setHealthPoints(player.getHealthPoints() + 10);
-        counter++;
+        purchases++;
     }
-    return getPotionsPurchaseMessage(player,counter);
+    return getPotionsPurchaseMessage(player, purchases);
 }
 
-string PotionsMerchant::applyRiskTaking(Player &player) const {
-    int counter = 0;
+std::string PotionsMerchant::applyRiskTaking(Player &player) const {
+    int purchases = 0;
     if (player.getCoins() >= 5 && player.getHealthPoints() < player.getMaxHealthPoints() && player.getHealthPoints() < 50) {
         player.setCoins(player.getCoins() - 5);
         player.setHealthPoints(player.getHealthPoints() + 10);
-        counter++;
+        purchases++;
     }
-    return getPotionsPurchaseMessage(player,counter);
+    return getPotionsPurchaseMessage(player, purchases);
 }
 
-string PotionsMerchant::apply(Player &player) {
+std::string PotionsMerchant::apply(Player &player) {
     if (player.getCharacter() == "Responsible") {
         return applyResponsible(player);
     } else if (player.getCharacter() == "RiskTaking") {
@@ -35,13 +35,10 @@ string PotionsMerchant::apply(Player &player) {
     return "";
 }
 
-
-
-string PotionsMerchant::getDescription() const {
+std::string PotionsMerchant::getDescription() const {
     return "PotionsMerchant";
 }
 
-
-string PotionsMerchant::getTypeString() const {
+std::string PotionsMerchant::getTypeString() const {
     return "PotionsMerchant";
 }

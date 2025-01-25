@@ -6,7 +6,6 @@
 #include "Players/Player.h"
 #include "Utilities.h"
 
-
 #include <vector>
 #include <memory>
 
@@ -22,6 +21,7 @@ class MatamStory{
 
 private:
     vector<std::unique_ptr<Player>> players;
+
     int m_numOfPlayers = 0;
     vector<std::shared_ptr<Event>> events;
 
@@ -82,12 +82,12 @@ public:
 
 class PlayersException : public std::exception {
     const char* what() const noexcept override {
-        return "Players exception occurred!";
+        return "Invalid Players File";
     }
 };
 
 class EventException : public std::exception {
     const char* what() const noexcept override {
-        return "EventException exception occurred!";
+        return "Invalid Events File";
     }
 };

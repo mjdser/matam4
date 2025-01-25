@@ -31,6 +31,7 @@ class Player {
 public:
 
     Player(const string& name, const string& character, const string& job);
+    Player(const Player& player);
     ~Player() = default;
 
     string getJob() const;

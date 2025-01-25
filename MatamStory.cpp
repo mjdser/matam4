@@ -1,4 +1,3 @@
-
 #include <algorithm>
 #include "MatamStory.h"
 #include <string>
@@ -6,10 +5,10 @@
 #include <vector>
 #include "Players/Player.h"
 
+/////////////////
 
 void MatamStory::eventsStreamReader(std::istream& eventsStream) {
-    string event;
-    std::vector<shared_ptr<Event>> pack_events;
+    std::string event;
     while (eventsStream >> event) {
         if(event == "SolarEclipse") {
             events.push_back(std::make_shared<SolarEclipse>());
@@ -25,14 +24,18 @@ void MatamStory::eventsStreamReader(std::istream& eventsStream) {
             int num_of_events;
             eventsStream >> num_of_events;
             if (num_of_events < 2) {
-                throw std::invalid_argument("Pack must be at least 2");
+                throw std::invalid_argument("Invalid Events File");
             }
+            std::vector<std::shared_ptr<Encounter>> pack_events = readFromPack(eventsStream, num_of_events);
+            events.push_back(std::make_shared<Pack>(pack_events));
+        } else {
+            throw std::invalid_argument("Invalid Events File");
         }
     }
 }
 
-
 MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) {
+
 
     eventsStreamReader(eventsStream);
 
@@ -40,213 +43,167 @@ MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) 
         throw EventException();
     }
 
-
-    /*===== TODO: Open and read events file =====*/
-    eventsStreamReader(eventsStream);
-    /*==========================================*/
-    /*===== TODO: Open and Read players file =====*/
     readPlayers(playersStream);
-    //we check 2<=players<=6 in the readPlayers function
-    /*============================================*/
+
+    if (players.size() < 2 || players.size() > 6) {
+        throw PlayersException();
+    }
 
     this->m_turnIndex = 1;
     this->m_roundIndex = 0;
-
 }
 
 void MatamStory::playTurn(Player& player) {
-
-    //check if turn index is bigger than the events size
     if (m_roundIndex >= events.size()) {
         m_roundIndex = 0;
     }
-    /**
-     * Steps to implement (there may be more, depending on your design):
-     * 1. Get the next event from the events list
-     * 2. Print the turn details with "printTurnDetails"
-     * 3. Play the event
-     * 4. Print the turn outcome with "printTurnOutcome"
-    */
 
-    shared_ptr<Event> current_event = events[m_roundIndex];
+    auto current_event = events[m_roundIndex];
     printTurnDetails(m_turnIndex, player, *current_event);
-    cout << current_event->apply(player) << endl << endl;
-    printTurnOutcome(current_event->getDescription());
+    std::cout << current_event->apply(player) << std::endl << std::endl;
+   // printTurnOutcome(current_event->getDescription());
+
     m_turnIndex++;
     m_roundIndex++;
 }
 
-bool comparingPlayers(const std::unique_ptr<Player>& Player_A, const std::unique_ptr<Player>& Player_B) {
-    if (Player_A->getLevel() == Player_B->getLevel()) {
-        if (Player_A->getForce() == Player_B->getForce()) {
-            if (Player_A->getHealthPoints() == Player_B->getHealthPoints()) {
-                return Player_A->getCoins() > Player_B->getCoins();
-            }
-            return Player_A->getHealthPoints() > Player_B->getHealthPoints();
+void sortPlayers(std::vector<std::unique_ptr<Player>>& players) {
+    std::sort(players.begin(), players.end(), [](const auto& lhs, const auto& rhs) {
+        if (lhs->getLevel() != rhs->getLevel()) {
+            return lhs->getLevel() > rhs->getLevel();
         }
-        return Player_A->getForce() > Player_B->getForce();
-    }
-    return Player_A->getLevel() > Player_B->getLevel();
-}
-
-void sortPlayers(vector<std::unique_ptr<Player>>& players) {
-    std::sort(players.begin(), players.end(), comparingPlayers);
+        if (lhs->getCoins() != rhs->getCoins()) {
+            return lhs->getCoins() > rhs->getCoins();
+        }
+        return lhs->getName() < rhs->getName();
+    });
 }
 
 void MatamStory::playRound() {
-
-    int players_num = this->m_numOfPlayers;
     printRoundStart();
 
-    /*===== TODO: Play a turn for each player =====*/
-
-    for (int i = 0; i < players_num; i++) {
-        Player *current_player = players[i].get();
-        if (!(*current_player).isDead()) {
-            {
-                playTurn(*current_player);
-            }
-        }
-
-        /*=============================================*/
-
-
-        printRoundEnd();
-
-        printLeaderBoardMessage();
-        sortPlayers(players);
-
-
-        /*===== TODO: Print leaderboard entry for each player using "printLeaderBoardEntry" =====*/
-        for (int j = 0; j < players_num; j++) {
-            printLeaderBoardEntry(i + 1, *players[j]);
-        }
-        /*=======================================================================================*/
-
-        printBarrier();
-    }
-}
-
-bool winner(const vector<std::unique_ptr<Player>>& players) {
-    for (const auto& player : players) {
-        if (player->getLevel() == 10) {
-            return true;
-        }
-    }
-    return false;
-}
-bool allDead(const vector<std::unique_ptr<Player>>& players) {
-    for (const auto& player : players) {
+    for (auto& player : players) {
         if (!player->isDead()) {
-            return false;
+            playTurn(*player);
         }
     }
-    return true;
+
+
+    vector<std::unique_ptr<Player>> sortedPlayers;
+
+    for (const auto& player : players) {
+        sortedPlayers.push_back(std::make_unique<Player>(*player));
+    }
+
+    sortPlayers(sortedPlayers);
+
+    printRoundEnd();
+
+    printLeaderBoardMessage();
+
+    int index = 1;
+    for (const auto& player : sortedPlayers) {
+        printLeaderBoardEntry(index++, *player);
+    }
+
+    printBarrier();
 }
 
+bool winner(const std::vector<std::unique_ptr<Player>>& players) {
+    return std::any_of(players.begin(), players.end(), [](const auto& player) {
+        return player->getLevel() == 10;
+    });
+}
 
-    bool MatamStory::isGameOver() const {
-        /*===== TODO: Implement the game over condition =====*/
-        if (winner(players) || allDead(players)) {
-            return true;
-        }
+bool allDead(const std::vector<std::unique_ptr<Player>>& players) {
+    return std::all_of(players.begin(), players.end(), [](const auto& player) {
+        return player->isDead();
+    });
+}
 
-        return false; // Replace this line
-        /*===================================================*/
+bool MatamStory::isGameOver() const {
+    return winner(players) || allDead(players);
+}
+
+void MatamStory::play() {
+    printStartMessage();
+
+    int index = 1;
+    for (const auto& player : players) {
+        printStartPlayerEntry(index++, *player);
     }
 
-    void MatamStory::play() {
-        printStartMessage();
-        /*===== TODO: Print start message entry for each player using "printStartPlayerEntry" =====*/
-        for (int i = 0; i < m_numOfPlayers ; i++) {
-            printStartPlayerEntry(i + 1, *players[i]);
-        }
-        /*=========================================================================================*/
-        printBarrier();
+    printBarrier();
 
-        while (!isGameOver()) {
-
-            playRound();
-        }
-
-        printGameOver();
-        /*===== TODO: Print either a "winner" message or "no winner" message =====*/
-        if (winner(players)) {
-            //sort the players by the rules and take the first one (use sort that i made)
-            sort(players.begin(), players.end(), comparingPlayers);
-            printWinner(*players[0]);
-        }
-        if(allDead(players)) {
-            printNoWinners();
-        }
-        /*========================================================================*/
+    while (!isGameOver()) {
+        playRound();
     }
 
-    vector<std::shared_ptr<Encounter>> MatamStory::readFromPack(istream &eventsStream, int size) {
-        //get the events from the stream that are inside the pack, note pack can has packs too so check if the event is pack
-        vector<shared_ptr<Encounter>> pack_events;
-        for (int i = 0; i < size; i++) {
-            string event;
-            eventsStream >> event;
-            if (event == "Snail") {
-                pack_events.push_back(std::make_shared<Snail>());
-            } else if (event == "Slime") {
-                pack_events.push_back(std::make_shared<Slime>());
-            } else if (event == "Balrog") {
-                pack_events.push_back(std::make_shared<Balrog>());
-            } else if (event == "Pack") {
-                int num_of_events;
-                eventsStream >> num_of_events;
-                if (num_of_events < 2) {
-                    throw std::invalid_argument("Pack must be at least 2");
-                }
-                vector<shared_ptr<Encounter>> Pack_loop = readFromPack(eventsStream, num_of_events);
-                pack_events.push_back(std::make_shared<Pack>(Pack_loop));
+    printGameOver();
+
+    if (winner(players)) {
+        sortPlayers(players);
+        printWinner(*players[0]);
+    } else {
+        printNoWinners();
+    }
+}
+
+std::vector<std::shared_ptr<Encounter>> MatamStory::readFromPack(std::istream& eventsStream, int size) {
+    std::vector<std::shared_ptr<Encounter>> pack_events;
+    for (int i = 0; i < size; ++i) {
+        std::string event;
+        eventsStream >> event;
+
+        if (event == "Snail") {
+            pack_events.push_back(std::make_shared<Snail>());
+        } else if (event == "Slime") {
+            pack_events.push_back(std::make_shared<Slime>());
+        } else if (event == "Balrog") {
+            pack_events.push_back(std::make_shared<Balrog>());
+        } else if (event == "Pack") {
+            int num_of_events;
+            eventsStream >> num_of_events;
+            if (num_of_events < 2) {
+                throw std::invalid_argument("Invalid Events File");
             }
+            auto nested_pack = readFromPack(eventsStream, num_of_events);
+            pack_events.push_back(std::make_shared<Pack>(nested_pack));
+        } else {
+            throw std::invalid_argument("Invalid Events File");
         }
-        return pack_events;
+    }
+    return pack_events;
 }
 
-//checks if the name is valid + no numbers etc
-    bool isNameValid(const string &name) {
-
-        //check if the name between 3-15 after that check if the name is valid
-        if (name.size() < 3 || name.size() > 15) {
-            return false;
-        }
-        for(char i : name) {
-            if ((i < 'a' || i > 'z') && (i < 'A' || i > 'Z')) {
-                return false;
-            }
-        }
-        return true;
+bool isNameValid(const std::string& name) {
+    if (name.size() < 3 || name.size() > 15) {
+        return false;
+    }
+    return std::all_of(name.begin(), name.end(), [](char c) {
+        return std::isalpha(c);
+    });
 }
 
-
-//read people from file and initialize the players vector
-void MatamStory::readPlayers(istream &playersStream) {
-
-    int num_of_players = 0;
-    string name;
-    string character;
-    string job;
-    while (playersStream >> name >> character >> job) {
+void MatamStory::readPlayers(std::istream& playersStream) {
+    std::string name, character, job;
+    while (playersStream >> name >> job >> character) {
         if (!isNameValid(name)) {
             throw PlayersException();
         }
+
         if (character != "RiskTaking" && character != "Responsible") {
             throw PlayersException();
         }
-        if (job != "Warrior" && job != "Magic" && job != "Archer") {
+
+        if (job != "Warrior" && job != "Magician" && job != "Archer") {
             throw PlayersException();
         }
+
         players.push_back(std::make_unique<Player>(name, character, job));
-        num_of_players++;
     }
-    this->m_numOfPlayers = num_of_players;
-    if (num_of_players < 2 || num_of_players > 6) {
+
+    if (players.size() < 2 || players.size() > 6) {
         throw PlayersException();
     }
-
 }
-

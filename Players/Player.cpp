@@ -19,12 +19,22 @@ force(5), healthPoints(MAX_HP), MAX_HealthPoints(MAX_HP) {
         this->healthPoints = MAX_HP_WARRIOR;
         this->MAX_HealthPoints = MAX_HP_WARRIOR;
         this->job = std::make_unique<Warrior>();
-    } else if (job == "Magic") {
+    } else if (job == "Magician") {
         this->job = std::make_unique<Magic>();
     } else if (job == "Archer") {
         this->coins = 20;
         this->job = std::make_unique<Archer>();
     }
+
+}
+
+
+Player::Player(const Player& other) :name(other.name), level(other.level),
+coins(other.coins), force(other.force){
+    this->job = other.job->clone();
+    this->character = other.character->clone();
+    this->healthPoints = other.healthPoints;
+    this->MAX_HealthPoints = other.MAX_HealthPoints;
 
 }
 
@@ -51,8 +61,12 @@ int Player::getHealthPoints() const {
 
 string Player::getDescription() const {
 
+
+
     string Player_name = this->name;
+
     string Player_job = this->job->getJobtoString();
+
     string Player_Character = this->character->getCharactertoString();
     int Player_level = this->level;
     int Player_Force = this->force;
@@ -84,6 +98,10 @@ void Player::setCoins(int coins_toSet) {
 void Player::setHealthPoints(int healthPoints_toSet) {
     if(healthPoints_toSet > MAX_HealthPoints) {
         this->healthPoints = MAX_HealthPoints;
+        return;
+    }
+    if(healthPoints_toSet <= 0) {
+        this->healthPoints = 0;
         return;
     }
     this->healthPoints = healthPoints_toSet;
