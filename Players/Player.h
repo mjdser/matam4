@@ -8,9 +8,7 @@
 
 
 
-#define MAX_LEVEL 10
-#define MAX_HP_WARRIOR 150
-#define MAX_HP 100
+
 
 
 using std::string;
@@ -27,7 +25,9 @@ class Player {
     int force;
     int healthPoints;
     int MAX_HealthPoints;
-
+    const static int MAX_LEVEL = 10;
+    const static int MAX_HP_WARRIOR = 150;
+    const static int MAX_HP = 100;
 public:
 
     Player(const string& name, const string& character, const string& job);
@@ -90,5 +90,7 @@ public:
     void setLevel(int level_ToSet);
 
     void setForce(int force_ToSet);
+
+    void applyJobEffects(const std::string& job);
 
 };

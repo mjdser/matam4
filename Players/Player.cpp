@@ -6,27 +6,40 @@
 using std::string;
 
 
+static std::unique_ptr<Character> createCharacter(const std::string& character) {
+    if (character == "RiskTaking") return std::make_unique<RiskTaking>();
+    if (character == "Responsible") return std::make_unique<Responsible>();
+    throw std::invalid_argument("Unknown character type: " + character);
+}
 
-Player::Player(const string& name, const string& character, const string& job) : name(name), level(1), coins(10),
-force(5), healthPoints(MAX_HP), MAX_HealthPoints(MAX_HP) {
-    if (character == "RiskTaking") {
-        this->character = std::make_unique<RiskTaking>();
-    } else if (character == "Responsible") {
-        this->character = std::make_unique<Responsible>();
-    }
+static std::unique_ptr<Job> createJob(const std::string& job) {
+    if (job == "Warrior") return std::make_unique<Warrior>();
+    if (job == "Magician") return std::make_unique<Magic>();
+    if (job == "Archer") return std::make_unique<Archer>();
+    throw std::invalid_argument("Unknown job type: " + job);
+}
 
-    if (job == "Warrior") {
+void Player::applyJobEffects(const std::string& job_type) {
+    if(job_type == "Warrior") {
         this->healthPoints = MAX_HP_WARRIOR;
         this->MAX_HealthPoints = MAX_HP_WARRIOR;
-        this->job = std::make_unique<Warrior>();
-    } else if (job == "Magician") {
-        this->job = std::make_unique<Magic>();
-    } else if (job == "Archer") {
-        this->coins = 20;
-        this->job = std::make_unique<Archer>();
     }
-
+    if(job_type == "Archer") {
+        this->coins = 20;
+    }
 }
+
+
+Player::Player(const std::string& name, const std::string& character, const std::string& job)
+        : name(name), level(1), coins(10), force(5), healthPoints(MAX_HP), MAX_HealthPoints(MAX_HP) {
+
+    this->job = createJob(job);
+    this->character = createCharacter(character);
+
+
+    applyJobEffects(job);
+}
+
 
 
 Player::Player(const Player& other) :name(other.name), level(other.level),
@@ -68,6 +81,7 @@ string Player::getDescription() const {
     string Player_job = this->job->getJobtoString();
 
     string Player_Character = this->character->getCharactertoString();
+
     int Player_level = this->level;
     int Player_Force = this->force;
 
@@ -126,5 +140,7 @@ string Player::getCharacter() const {
 int Player::getForce() const {
     return force;
 }
+
+
 
 

@@ -4,19 +4,17 @@
 #include <vector>
 #include "../Players/Player.h"
 
-#define Snail_CombatPower 5
-#define Snail_Loot 2
-#define Snail_Damage 10
 
-#define Slime_CombatPower 12
-#define Slime_Loot 5
-#define Slime_Damage 25
 
-#define Balrog_CombatPower 15
-#define Balrog_Loot 100
-#define Balrog_Damage 9001
+
 
 using namespace std;
+
+class SolarEclipse;
+class PotionsMerchant;
+class Snail;
+class Slime;
+class Balrog;
 
 class Event {
 public:
@@ -59,9 +57,13 @@ public:
         player.setLevel(player.getLevel() + 1);
     }
 
-    bool canPlayerWin(Player &player);
 
     string apply(Player &player) override;
+
+
+
+
+
 };
 
 class Snail : public Encounter {
@@ -71,6 +73,10 @@ public:
 
     string getTypeString() const override;
     string getDescription() const override;
+
+    const static int Snail_CombatPower = 5;
+    const static int Snail_Loot = 2;
+    const static int Snail_Damage = 10;
 
 
 };
@@ -83,10 +89,14 @@ public:
     string getTypeString() const override;
     string getDescription() const override;
 
+    const static int Slime_CombatPower = 12;
+    const static int Slime_Loot = 5;
+    const static int Slime_Damage = 25;
 
 };
 
 class Balrog : public Encounter {
+
 public:
     Balrog();
     ~Balrog() override = default;
@@ -95,14 +105,20 @@ public:
     string getDescription() const override;
 
 
+
+    const static int Balrog_CombatPower = 15;
+    const static int Balrog_Loot = 100;
+    const static int Balrog_Damage = 9001;
+
+
 };
 
 class Pack : public Encounter {
 private:
     std::vector<std::shared_ptr<Encounter>> events;
+
 public:
     explicit Pack(const std::vector<std::shared_ptr<Encounter>>& events);
-    ~Pack() override = default;
 
     string getTypeString() const override;
 
@@ -110,9 +126,7 @@ public:
 
     string apply(Player& player)  override;
 
-    string getPack() const{
-        return "Pack";
-    }
+    void Refill();
 };
 
 
@@ -120,6 +134,8 @@ class SpecialEncounter : public Event {
 public:
     SpecialEncounter() = default;
     ~SpecialEncounter() override = default;
+
+
 };
 
 class SolarEclipse : public SpecialEncounter {
@@ -133,8 +149,8 @@ public:
 
 class PotionsMerchant : public SpecialEncounter {
 private:
-    string applyResponsible(Player& player) const;
-    string applyRiskTaking(Player& player) const;
+    static string applyResponsible(Player& player) ;
+    static string applyRiskTaking(Player& player) ;
 
 public:
     PotionsMerchant() = default;
@@ -144,4 +160,7 @@ public:
 
     string getDescription() const override;
     string apply(Player& player)  override;
+
 };
+
+

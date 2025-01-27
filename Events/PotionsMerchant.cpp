@@ -1,12 +1,7 @@
 #include "Event.h"
 #include "Utilities.h"
 
-
-
-
-
-
-std::string PotionsMerchant::applyResponsible(Player &player) const {
+std::string PotionsMerchant::applyResponsible(Player &player) {
     int purchases = 0;
     while (player.getCoins() >= 5 && player.getHealthPoints() < player.getMaxHealthPoints()) {
         player.setCoins(player.getCoins() - 5);
@@ -16,14 +11,13 @@ std::string PotionsMerchant::applyResponsible(Player &player) const {
     return getPotionsPurchaseMessage(player, purchases);
 }
 
-std::string PotionsMerchant::applyRiskTaking(Player &player) const {
-    int purchases = 0;
+std::string PotionsMerchant::applyRiskTaking(Player &player) {
     if (player.getCoins() >= 5 && player.getHealthPoints() < player.getMaxHealthPoints() && player.getHealthPoints() < 50) {
         player.setCoins(player.getCoins() - 5);
         player.setHealthPoints(player.getHealthPoints() + 10);
-        purchases++;
+        return getPotionsPurchaseMessage(player, 1);
     }
-    return getPotionsPurchaseMessage(player, purchases);
+    return getPotionsPurchaseMessage(player, 0);
 }
 
 std::string PotionsMerchant::apply(Player &player) {

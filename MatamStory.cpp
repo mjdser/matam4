@@ -5,27 +5,46 @@
 #include <vector>
 #include "Players/Player.h"
 
+
+///////////////////////
+
+static std::shared_ptr<SpecialEncounter> createSpecialEncounter(const std::string& event) {
+    if (event == "SolarEclipse") return std::make_shared<SolarEclipse>();
+    if (event == "PotionsMerchant") return std::make_shared<PotionsMerchant>();
+
+    throw std::invalid_argument("Invalid special encounter type: " + event);
+}
+
+static std::shared_ptr<Encounter> createEncounter(const std::string& event) {
+    if (event == "Snail") return std::make_shared<Snail>();
+    if (event == "Slime") return std::make_shared<Slime>();
+    if (event == "Balrog") return std::make_shared<Balrog>();
+
+    throw std::invalid_argument("Invalid encounter type: " + event);
+}
+
 /////////////////
 
 void MatamStory::eventsStreamReader(std::istream& eventsStream) {
     std::string event;
     while (eventsStream >> event) {
-        if(event == "SolarEclipse") {
-            events.push_back(std::make_shared<SolarEclipse>());
-        } else if (event == "PotionsMerchant") {
-            events.push_back(std::make_shared<PotionsMerchant>());
-        } else if (event == "Snail") {
-            events.push_back(std::make_shared<Snail>());
-        } else if (event == "Slime") {
-            events.push_back(std::make_shared<Slime>());
-        } else if (event == "Balrog") {
-            events.push_back(std::make_shared<Balrog>());
+
+        if(event == "SolarEclipse" || event == "PotionsMerchant") {
+            auto specialEncounter = createSpecialEncounter(event);
+                    events.push_back(specialEncounter);
+
+        } else if (event == "Snail" || event == "Slime" || event == "Balrog") {
+            auto encounter = createEncounter(event);
+            events.push_back(encounter);
+
         } else if (event == "Pack") {
             int num_of_events;
             eventsStream >> num_of_events;
             if (num_of_events < 2) {
                 throw std::invalid_argument("Invalid Events File");
             }
+
+            // Read the Pack contents and store the original size
             std::vector<std::shared_ptr<Encounter>> pack_events = readFromPack(eventsStream, num_of_events);
             events.push_back(std::make_shared<Pack>(pack_events));
         } else {
@@ -33,6 +52,7 @@ void MatamStory::eventsStreamReader(std::istream& eventsStream) {
         }
     }
 }
+
 
 MatamStory::MatamStory(std::istream& eventsStream, std::istream& playersStream) {
 
@@ -155,12 +175,11 @@ std::vector<std::shared_ptr<Encounter>> MatamStory::readFromPack(std::istream& e
         std::string event;
         eventsStream >> event;
 
-        if (event == "Snail") {
-            pack_events.push_back(std::make_shared<Snail>());
-        } else if (event == "Slime") {
-            pack_events.push_back(std::make_shared<Slime>());
-        } else if (event == "Balrog") {
-            pack_events.push_back(std::make_shared<Balrog>());
+        if(event == "Snail" || event == "Slime" || event == "Balrog"){
+
+            auto encounter = createEncounter(event);
+        pack_events.push_back(encounter);
+
         } else if (event == "Pack") {
             int num_of_events;
             eventsStream >> num_of_events;
@@ -168,7 +187,7 @@ std::vector<std::shared_ptr<Encounter>> MatamStory::readFromPack(std::istream& e
                 throw std::invalid_argument("Invalid Events File");
             }
             auto nested_pack = readFromPack(eventsStream, num_of_events);
-            pack_events.push_back(std::make_shared<Pack>(nested_pack));
+            pack_events.insert(pack_events.end(), nested_pack.begin(), nested_pack.end()); // Flatten the pack
         } else {
             throw std::invalid_argument("Invalid Events File");
         }

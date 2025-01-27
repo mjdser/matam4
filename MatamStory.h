@@ -74,7 +74,7 @@ public:
 
     void eventsStreamReader(std::istream &eventsStream);
 
-    vector<shared_ptr<Encounter>> readFromPack(istream &eventsStream, int size);
+    static vector<shared_ptr<Encounter>> readFromPack(istream &eventsStream, int size);
 
     void readPlayers(istream &playersStream);
 };

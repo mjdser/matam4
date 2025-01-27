@@ -14,10 +14,10 @@ std::string Encounter::apply(Player& player) {
         setBalrogCombatPower();
     }
 
-    // Default health adjustment
     int healthAdjustment = getDamage();
+
     if (player.getCombatPower() > powerBeforeAdjustment) {
-        // Player wins the encounter
+
         player.setCoins(player.getCoins() + getLoot());
 
         if (player.getJob() == "Warrior") {
@@ -27,8 +27,9 @@ std::string Encounter::apply(Player& player) {
         levelUp(player);
         return getEncounterWonMessage(player, getLoot());
     } else {
-        // Player loses the encounter
+
         player.setHealthPoints(player.getHealthPoints() - healthAdjustment);
+
         return getEncounterLostMessage(player, getDamage());
     }
 }
